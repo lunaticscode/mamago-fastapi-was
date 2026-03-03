@@ -6,8 +6,8 @@ logger = logging.getLogger("api")
 
 _client: OpenAI | None = None
 
-OPENROUTER_API_KEY = getenv("OPENROUTER_API_KEY", "")
-OPENROUTER_MODEL = "google/gemma-3-27b-it:free "
+OPENROUTER_API_KEY = getenv("OPENROUTER_AI_KEY", "")
+OPENROUTER_MODEL = getenv("OPENROUTER_AI_MODEL", "google/gemma-3-27b-it:free")
 # deepseek/deepseek-v3.2-20251201:free
 def init():
     global _client
