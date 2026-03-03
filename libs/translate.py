@@ -1,8 +1,7 @@
-import logging
 import time
 from faster_whisper import WhisperModel
 
-logger = logging.getLogger(__name__)
+from utils.error import AppException, ErrorCode, ERROR_MESSAGES
 
 whisper_model: WhisperModel | None = None
 # 최초 로드 이후부터는 ~/.cache/huggingface/hub에 저장된 모델을 참조.
@@ -22,12 +21,9 @@ def load_whisper():
         )
         print(f"Success to load whisper! ({time.time() - start:.2f}s)")
         return True
-    except (OSError, FileNotFoundError) as e:
-        logger.error(f"모델 파일 다운로드/경로 오류: {e}")
-        return False
-    except RuntimeError as e:
-        logger.error(f"모델 로드 중 런타임 오류: {e}")
-        return False
-    except Exception as e:
-        logger.error(f"예상하지 못한 오류: {e}")
-        return False
+    except (OSError, FileNotFoundError):
+        raise AppException(code=ErrorCode.MODEL_FILE_ERROR, message=ERROR_MESSAGES[ErrorCode.MODEL_FILE_ERROR])
+    except RuntimeError:
+        raise AppException(code=ErrorCode.MODEL_RUNTIME_ERROR, message=ERROR_MESSAGES[ErrorCode.MODEL_RUNTIME_ERROR])
+    except Exception:
+        raise AppException(code=ErrorCode.MODEL_LOAD_ERROR, message=ERROR_MESSAGES[ErrorCode.MODEL_LOAD_ERROR])
