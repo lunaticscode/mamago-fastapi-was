@@ -11,6 +11,6 @@ async def get_chat_histories():
 
 @chat_router.post("/summary", name=ChatRouterName.SUMMARIZE_CHAT)
 async def summarize_chat(file: UploadFile = File(...)):
-    return await ctrl_summarize_chat(file)
+    return ctrl_summarize_chat(file)
 
 

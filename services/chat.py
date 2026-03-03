@@ -1,5 +1,15 @@
 from fastapi import UploadFile
+
+from libs.openrouter import chat
+# from libs.openrouter import chat_stream
 from libs.translate import convert_mp3_to_text
-async def get_summary_result(file: UploadFile):
+
+def get_summary_result(file: UploadFile):
     text = convert_mp3_to_text(file)
-    return True
+    messages = [
+        {"role": "system", "content": "다음 텍스트를 요약해줘."},
+        {"role": "user", "content": text},
+    ]
+    summary = chat(messages)
+    return {"original": text, "summary": summary}
+    # return chat_stream(messages)

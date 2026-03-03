@@ -2,6 +2,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from starlette.middleware.gzip import GZipMiddleware
 from starlette.responses import JSONResponse
+
+from libs.openrouter import init as openrouter_ai_init
 from middlewares.logger import LoggerMiddleware
 from routes.index import api_router
 from libs.translate import load_whisper
@@ -10,6 +12,7 @@ from utils.error import AppException, ErrorCode, ERROR_MESSAGES
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    openrouter_ai_init()
     load_whisper()
     print("startup")
     yield
