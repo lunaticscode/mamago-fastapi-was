@@ -1,5 +1,4 @@
 from fastapi import APIRouter, UploadFile, File
-
 from shared.consts.router_name import ChatRouterName
 from controllers.chat import get_chat_histories as ctrl_get_chat_histories
 from controllers.chat import summarize_chat as ctrl_summarize_chat

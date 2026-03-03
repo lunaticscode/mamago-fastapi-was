@@ -1,3 +1,4 @@
+import tempfile
 import time
 
 from fastapi import UploadFile
@@ -19,7 +20,7 @@ def load_whisper():
         whisper_model = WhisperModel(
             "small",
             device="cpu",
-            compute_type="int8"
+            compute_type="int8",
         )
         print(f"Success to load whisper! ({time.time() - start:.2f}s)")
         return True
@@ -31,16 +32,22 @@ def load_whisper():
         raise AppException(code=ErrorCode.MODEL_LOAD_ERROR, message=ERROR_MESSAGES[ErrorCode.MODEL_LOAD_ERROR])
 
 
-def get_model():
+def _get_model():
     global whisper_model
     if whisper_model is not None:
         return whisper_model
     load_whisper()
     return whisper_model
 
-def convert_mp3_to_text(mp3: UploadFile):
-    print(mp3)
-    model = get_model()
-    print(model)
-
-
+def convert_mp3_to_text(mp3: UploadFile) -> str:
+    model = _get_model()
+    with tempfile.NamedTemporaryFile(suffix=".mp3") as tmp:
+        tmp.write(mp3.file.read())
+        tmp.flush()
+        print("start convert mp3 to text....")
+        start = time.time()
+        segments, _info = model.transcribe(tmp.name, beam_size=1, vad_filter=True)
+        text = "".join(segment.text for segment in segments)
+        print(text)
+        print(f"Finished converting. ({time.time() - start:.2f}s)")
+    return text
