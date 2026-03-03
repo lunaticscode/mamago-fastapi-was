@@ -7,8 +7,7 @@ from libs.translate import convert_mp3_to_text
 def get_summary_result(file: UploadFile):
     text = convert_mp3_to_text(file)
     messages = [
-        {"role": "system", "content": "다음 텍스트를 요약해줘."},
-        {"role": "user", "content": text},
+        {"role": "user", "content": f"다음 텍스트를 요약해줘.\n\n{text}"},
     ]
     summary = chat(messages)
     return {"original": text, "summary": summary}

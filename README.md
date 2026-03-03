@@ -1,4 +1,4 @@
-# mamago (FastAPI WAS)
+# mamago API Server
 
 MP3 음성 파일을 텍스트로 변환(STT)하고, LLM을 통해 요약하여 반환하는 PoC 프로젝트
 
