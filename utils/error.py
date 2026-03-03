@@ -10,12 +10,14 @@ class ErrorCode(str, Enum):
     MODEL_FILE_ERROR = "MODEL_FILE_ERROR"
     MODEL_RUNTIME_ERROR = "MODEL_RUNTIME_ERROR"
     MODEL_LOAD_ERROR = "MODEL_LOAD_ERROR"
+    FILE_SIZE_EXCEEDED = "FILE_SIZE_EXCEEDED"
 
 ERROR_MESSAGES = {
     ErrorCode.UNKNOWN_ERROR: DEFAULT_ERROR_MESSAGE,
     ErrorCode.MODEL_FILE_ERROR: "모델 파일 다운로드/경로 오류",
     ErrorCode.MODEL_RUNTIME_ERROR: "모델 로드 중 런타임 오류",
     ErrorCode.MODEL_LOAD_ERROR: "모델 로드 중 예상하지 못한 오류",
+    ErrorCode.FILE_SIZE_EXCEEDED: "파일 크기가 제한을 초과했습니다",
 }
 
 class AppException(Exception):

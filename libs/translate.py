@@ -1,4 +1,6 @@
 import time
+
+from fastapi import UploadFile
 from faster_whisper import WhisperModel
 
 from utils.error import AppException, ErrorCode, ERROR_MESSAGES
@@ -27,3 +29,18 @@ def load_whisper():
         raise AppException(code=ErrorCode.MODEL_RUNTIME_ERROR, message=ERROR_MESSAGES[ErrorCode.MODEL_RUNTIME_ERROR])
     except Exception:
         raise AppException(code=ErrorCode.MODEL_LOAD_ERROR, message=ERROR_MESSAGES[ErrorCode.MODEL_LOAD_ERROR])
+
+
+def get_model():
+    global whisper_model
+    if whisper_model is not None:
+        return whisper_model
+    load_whisper()
+    return whisper_model
+
+def convert_mp3_to_text(mp3: UploadFile):
+    print(mp3)
+    model = get_model()
+    print(model)
+
+
